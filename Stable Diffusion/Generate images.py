@@ -1,10 +1,10 @@
-# make sure you're logged in with `huggingface-cli login`
+# make sure you're logged in with `huggingface-cli login`, use ldm environment
 from torch import autocast
 from diffusers import StableDiffusionPipeline
 
 pipe = StableDiffusionPipeline.from_pretrained(
     "CompVis/stable-diffusion-v1-4",
-    use_auth_token=True
+    use_auth_token="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"
 ).to("cuda")
 
 prompt = "a photo of an astronaut riding a horse on mars"
