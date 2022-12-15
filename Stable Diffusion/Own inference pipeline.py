@@ -1,4 +1,5 @@
 import torch
+import time
 
 torch_device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -43,6 +44,9 @@ batch_size = 1
 
 # First, we get the text_embeddings for the prompt. These embeddings will be used to condition the UNet model.
 
+start_all = time.process_time()
+start_2_all = time.time()
+
 text_input = tokenizer(prompt, padding="max_length", max_length=tokenizer.model_max_length, truncation=True,
                        return_tensors="pt")
 
@@ -75,6 +79,9 @@ latents = latents * scheduler.init_noise_sigma
 from tqdm.auto import tqdm
 from torch import autocast
 
+start_denoising = time.process_time()
+start_2_denoising = time.time()
+
 for t in tqdm(scheduler.timesteps):
     # expand the latents if we are doing classifier-free guidance to avoid doing two forward passes.
     latent_model_input = torch.cat([latents] * 2)
@@ -92,12 +99,24 @@ for t in tqdm(scheduler.timesteps):
     # compute the previous noisy sample x_t -> x_t-1
     latents = scheduler.step(noise_pred, t, latents).prev_sample
 
+end_denoising = time.process_time()
+end_2_denoising = time.time()
+
 # We now use the vae to decode the generated latents back into the image.
 # scale and decode the image latents with vae
 latents = 1 / 0.18215 * latents
 
 with torch.no_grad():
     image = vae.decode(latents).sample
+
+end_all = time.process_time()
+end_2_all = time.time()
+
+# Print time
+print("Process time denoising: " + str(end_denoising - start_denoising) + "s")
+print("Wall-clock time denoising: " + str(end_2_denoising - start_2_denoising) + "s")
+print("Process time all: " + str(end_all - start_all) + "s")
+print("Wall-clock time all: " + str(end_2_all - start_2_all) + "s")
 
 # And finally, let's convert the image to PIL so we can display or save it.
 from PIL import Image
