@@ -29,7 +29,9 @@ text_encoder = text_encoder.to(torch_device)
 unet = unet.to(torch_device)
 
 # We now define the parameters we'll use to generate images.
-prompt = ["a photograph of an astronaut riding a horse"]
+# prompt = ["a photograph of an astronaut riding a horse"]
+# prompt = ["a photo of medieval knight crying in the rain"]
+prompt = ["Disneyland painted by Van Gogh"]
 
 height = 512  # default height of Stable Diffusion
 width = 512  # default width of Stable Diffusion
