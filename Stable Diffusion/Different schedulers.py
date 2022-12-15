@@ -1,6 +1,7 @@
 import torch
 import time
-from diffusers import StableDiffusionPipeline, LMSDiscreteScheduler
+from diffusers import StableDiffusionPipeline, LMSDiscreteScheduler, DDPMScheduler, DDIMScheduler, PNDMScheduler, \
+    ScoreSdeVeScheduler
 
 pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5", torch_dtype=torch.float16)
 
