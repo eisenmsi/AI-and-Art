@@ -27,3 +27,4 @@ print("Process time: " + str(end - start) + "s")
 print("Wall-clock time: " + str(end_2 - start_2) + "s")
 
 image.show()
+image.save(r'Different schedulers.png')
