@@ -1,12 +1,14 @@
 import torch
 import time
-from diffusers import StableDiffusionPipeline, LMSDiscreteScheduler, DDPMScheduler, DDIMScheduler, PNDMScheduler, \
-    ScoreSdeVeScheduler
+from diffusers import StableDiffusionPipeline, LMSDiscreteScheduler, DDPMScheduler, DDIMScheduler, PNDMScheduler
 
 pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5", torch_dtype=torch.float16)
 
 # Define scheduler
 pipe.scheduler = LMSDiscreteScheduler.from_config(pipe.scheduler.config)
+# pipe.scheduler = DDPMScheduler.from_config(pipe.scheduler.config)
+# pipe.scheduler = DDIMScheduler.from_config(pipe.scheduler.config)
+# pipe.scheduler = PNDMScheduler.from_config(pipe.scheduler.config)
 
 # Use GPU
 pipe = pipe.to("cuda")
